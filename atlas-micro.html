@@ -1,6 +1,6 @@
 <title>Atlas de Microbiología GERMEN</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Atlas interactivo de microbiología del grupo GERMEN: modelos 3D, pared celular, patogenicidad y resistencia animadas.">
+<meta name="description" content="Atlas interactivo de microbiología del grupo GERMEN: modelos 3D, pared celular, patogenicidad y resistencia animadas, y laboratorio virtual de identificación, antibiograma y diagnóstico molecular.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:wght@400..700&family=Newsreader:ital,opsz,wght@1,6..72,400..600&family=JetBrains+Mono:wght@400..600&display=swap">
@@ -239,6 +239,128 @@ dl.facts dd{margin:0}
 .rise{animation:rise .7s var(--ease-out) both;animation-delay:calc(var(--i,0)*55ms)}
 @keyframes rise{from{opacity:0;transform:translateY(12px)}}
 
+
+/* Laboratorio virtual */
+.modes{display:inline-flex;padding:4px;gap:2px;border-radius:14px;border:1px solid var(--line2);background:var(--surface);backdrop-filter:blur(12px)}
+.modes button{display:inline-flex;align-items:center;gap:7px;border:0;background:transparent;padding:8px 14px;border-radius:10px;font-weight:700;font-size:13.5px;color:var(--muted);cursor:pointer;transition:background .25s var(--ease-std),color .2s,transform .2s var(--ease-out)}
+.modes button:hover{color:var(--fg)}
+.modes button:active{transform:scale(.97)}
+.modes button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.app.labmode{grid-template-areas:"top top top" "lab lab lab"}
+.app.labmode :is(.catalog,.stage,.panel,.search){display:none}
+.lab{grid-area:lab;min-height:0;display:grid;grid-template-columns:252px minmax(0,1fr) 372px;gap:12px}
+.lab-rail{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:16px;padding:16px;border-radius:20px;background:var(--surface);border:1px solid var(--line);backdrop-filter:blur(14px);scrollbar-width:thin}
+.rail-g{display:flex;flex-direction:column;gap:4px}
+.rail-g h2{font:700 11px/1.3 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 4px 4px}
+.rail-b{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:center;text-align:left;padding:9px 10px;border-radius:12px;border:1px solid transparent;background:transparent;cursor:pointer;transition:transform .22s var(--ease-out),background .2s var(--ease-std),border-color .2s}
+.rail-b svg{color:var(--muted);transition:color .2s}
+.rail-b b{display:block;font-size:14px}
+.rail-b small{display:block;font-size:12px;color:var(--muted);line-height:1.3}
+.rail-b:hover{background:var(--surface2);transform:translateX(3px)}
+.rail-b[aria-current="true"]{background:var(--surface2);border-color:color-mix(in srgb,var(--accent) 55%,transparent)}
+.rail-b[aria-current="true"] svg{color:var(--accent)}
+.rail-note{margin:auto 4px 0;font-size:12.5px;color:var(--muted)}
+.bench{position:relative;min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto;border-radius:24px;border:1px solid var(--line);overflow:hidden;color:var(--stage-fg);background:radial-gradient(120% 90% at 50% 30%,var(--stage1),var(--stage2));
+  --lb-line:color-mix(in srgb,var(--stage-fg) 26%,transparent);--lb-ink:color-mix(in srgb,var(--stage-fg) 70%,transparent);--lb-well:color-mix(in srgb,var(--stage-fg) 7%,transparent);--lb-box:color-mix(in srgb,var(--stage-fg) 5%,transparent)}
+.bench-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px 16px;flex-wrap:wrap;padding:16px 18px 4px}
+.bench-head h2{font:800 clamp(22px,2.2vw,28px)/1.1 var(--f-display);letter-spacing:-.015em;margin-top:4px}
+.bh-org{display:flex;align-items:center;gap:8px}
+.bh-org label{font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.bh-org select{appearance:none;font:italic 500 16px var(--f-sp);color:var(--fg);padding:8px 34px 8px 12px;border-radius:12px;border:1px solid var(--line2);background:var(--tag-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238fa8a2' stroke-width='3'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;cursor:pointer;max-width:240px;transition:border-color .2s}
+.bh-org select:hover,.bh-org select:focus{border-color:var(--accent);outline:none}
+.bh-org option{font-style:normal;background:var(--bg);color:var(--fg)}
+.lb-stage{position:relative;min-height:0;display:grid;place-items:center;padding:4px 12px}
+.lb-svg{width:100%;height:100%;max-height:100%;display:block;user-select:none;-webkit-user-select:none;font-family:var(--f-mono);overflow:visible}
+.lb-svg text{font-size:14px;fill:currentColor}
+.lb-svg .sm{font-size:12.5px}
+.lb-svg .mut{fill:color-mix(in srgb,var(--stage-fg) 62%,transparent)}
+.lb-svg .tb{font-family:var(--f-body);font-weight:700}
+.lb-svg .disk{font:700 8.5px var(--f-mono);fill:#222}
+.lb-svg .sp{font-style:italic}
+.lb-svg .glass{fill:color-mix(in srgb,var(--stage-fg) 6%,transparent);stroke:color-mix(in srgb,var(--stage-fg) 40%,transparent);stroke-width:2}
+.lb-svg .box{fill:var(--lb-box);stroke:var(--lb-line)}
+.lb-svg .meas{paint-order:stroke;stroke:var(--stage2);stroke-width:4px}
+.lb-hit{cursor:pointer;outline:none}
+.lb-hit:hover{filter:brightness(1.12) drop-shadow(0 0 6px color-mix(in srgb,var(--accent) 60%,transparent))}
+.lb-hit:focus-visible{filter:drop-shadow(0 0 0 var(--accent)) drop-shadow(0 0 5px var(--accent))}
+.lb-hit.sel{filter:drop-shadow(0 0 8px var(--accent))}
+.sbtn{cursor:pointer}
+.sbtn rect{fill:var(--tag-bg);stroke:var(--accent);stroke-width:1.4;transition:fill .2s}
+.sbtn text{font:700 13.5px var(--f-body);fill:var(--stage-fg)}
+.sbtn:hover rect{fill:color-mix(in srgb,var(--accent) 22%,var(--tag-bg))}
+.sbtn.pri rect{fill:var(--accent)}
+.sbtn.pri text{fill:var(--accent-ink)}
+.lb-pulse{animation:lbPulse 1.5s var(--ease-std) infinite}
+@keyframes lbPulse{50%{opacity:.4}}
+.bench-bar{display:flex;align-items:center;justify-content:space-between;gap:10px 14px;flex-wrap:wrap;padding:10px 16px 16px}
+.lb-prog{display:flex;gap:5px}
+.lb-prog i{width:26px;height:5px;border-radius:3px;background:var(--lb-line);transition:background .3s}
+.lb-prog i[data-s="done"]{background:var(--accent)}
+.lb-prog i[data-s="now"]{background:color-mix(in srgb,var(--accent) 45%,transparent)}
+.lb-acts{display:flex;gap:8px;flex-wrap:wrap}
+.lb-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;border:1px solid var(--line2);background:var(--tag-bg);color:var(--fg);font-weight:700;font-size:14px;cursor:pointer;backdrop-filter:blur(10px);transition:transform .2s var(--ease-out),border-color .2s,background .2s}
+.lb-btn:hover:not(:disabled){transform:translateY(-1px);border-color:var(--accent)}
+.lb-btn:active:not(:disabled){transform:scale(.97)}
+.lb-btn:disabled{opacity:.45;cursor:progress}
+.lb-btn.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);box-shadow:0 6px 22px -8px var(--accent)}
+.lb-btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
+.lb-btn.sm{padding:7px 12px;font-size:13px}
+.lb-btn.ok{border-color:var(--r5);background:color-mix(in srgb,var(--r5) 18%,transparent)}
+.lb-btn.no{border-color:var(--r1);background:color-mix(in srgb,var(--r1) 14%,transparent)}
+.lab-side{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:16px;padding:20px;border-radius:20px;background:var(--surface);border:1px solid var(--line);backdrop-filter:blur(14px);scrollbar-width:thin}
+.lab-side>*{flex-shrink:0}
+.lab-side h3{font:700 11px/1.3 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.lab-side p{margin:0 0 8px;font-size:14px}
+.lb-say{min-height:3.2em;padding:12px 14px;border-radius:14px;border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);background:color-mix(in srgb,var(--accent) 8%,transparent);font-size:14px}
+.lb-say:empty{display:none}
+.lb-say.flash{animation:rise .5s var(--ease-out)}
+.lb-steps{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.lb-steps li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;padding:8px;border-radius:12px;transition:background .3s,opacity .3s}
+.lb-steps .n{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line2);font:700 12px var(--f-mono)}
+.lb-steps b{font-size:14px}
+.lb-steps p{display:none;margin:4px 0 0;font-size:13.5px;color:var(--muted)}
+.lb-steps li[data-s="now"]{background:var(--surface2)}
+.lb-steps li[data-s="now"] p{display:block}
+.lb-steps li[data-s="now"] .n{border-color:var(--accent);color:var(--accent)}
+.lb-steps li[data-s="done"] .n{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.lb-steps li[data-s="next"]{opacity:.6}
+.lb-res{padding:14px;border-radius:16px;border:1px solid var(--line2);background:var(--surface2);animation:rise .6s var(--ease-out)}
+.lb-res h4{font:700 14px var(--f-display);margin:12px 0 8px}
+.lb-tbl{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0 10px}
+.lb-tbl th{font:600 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px 6px;border-bottom:1px solid var(--line2)}
+.lb-tbl td{padding:6px;border-bottom:1px solid var(--line);vertical-align:top}
+.lb-tbl .nw{white-space:nowrap}
+.lb-tbl td small{display:block;color:var(--muted);font-size:11.5px}
+.lb-tbl.film tr.hit td{font-weight:700;background:color-mix(in srgb,var(--accent2) 10%,transparent)}
+.lb-tbl .nd{color:var(--muted);font-size:12px}
+.lb-tbl .bar{display:inline-block;width:70px;height:6px;border-radius:3px;background:var(--line);vertical-align:middle;margin-right:6px;overflow:hidden}
+.lb-tbl .bar i{display:block;height:100%;background:var(--accent)}
+.sir{display:inline-block;padding:2px 8px;border-radius:6px;font:700 11.5px var(--f-mono);white-space:nowrap}
+.sir.S{color:var(--r5);background:color-mix(in srgb,var(--r5) 16%,transparent)}
+.sir.I{color:var(--r2);background:color-mix(in srgb,var(--r2) 16%,transparent)}
+.sir.R{color:var(--r1);background:color-mix(in srgb,var(--r1) 16%,transparent)}
+.sir.D{color:var(--accent);background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.sir.N{color:var(--muted);background:var(--line)}
+.lb-score{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.lb-score .big{font:800 34px/1 var(--f-display);color:var(--accent);letter-spacing:-.02em}
+.lb-score .big.neg{color:var(--muted)}
+.lb-score b{display:block;font-size:15px}
+.lb-score small{display:block;color:var(--muted);font-size:12.5px}
+.lb-warn{padding:10px 12px;border-radius:12px;border-left:3px solid var(--accent2);background:color-mix(in srgb,var(--accent2) 10%,transparent)}
+.lb-std,.lb-bio{font-size:13px;color:var(--muted)}
+.lb-list{margin:0 0 10px;padding-left:18px;font-size:14px}
+.lb-aes ul{margin:0 0 8px;padding-left:18px;font-size:14px}
+.lb-quiz{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.lb-quiz>div{display:flex;flex-wrap:wrap;gap:6px}
+.lb-quiz p{margin-top:8px}
+.lb-about p{color:var(--muted)}
+.lb-about b{color:var(--fg)}
+.lb-refs{font-size:12px!important;color:var(--muted)}
+i.sp{font-family:var(--f-sp);font-size:1.06em}
+.lablinks{display:flex;flex-wrap:wrap;gap:6px}
+.lablink{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:10px;border:1px solid var(--line2);background:transparent;font-size:13px;font-weight:600;cursor:pointer;transition:transform .2s var(--ease-out),border-color .2s,background .2s}
+.lablink svg{color:var(--accent)}
+.lablink:hover{transform:translateY(-1px);border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent)}
 @media (max-width:1180px){
   html,body{height:auto}
   .app{height:auto;grid-template-columns:minmax(0,1fr);grid-template-rows:auto;grid-template-areas:"top" "stage" "cat" "panel"}
@@ -249,6 +371,14 @@ dl.facts dd{margin:0}
   .list{flex-direction:row;overflow-x:auto;margin:0 -14px;padding:0 14px 4px}
   .list li{flex:0 0 228px}
   .panel{overflow:visible}
+  .app.labmode{grid-template-areas:"top" "lab"}
+  .lab{grid-template-columns:minmax(0,1fr)}
+  .lab-rail{flex-direction:row;overflow-x:auto;padding:10px;gap:14px;border-radius:16px}
+  .rail-g{flex-direction:row;align-items:stretch}
+  .rail-g h2,.rail-note{display:none}
+  .rail-b{flex:0 0 auto;min-width:190px}
+  .bench{height:clamp(540px,82vh,760px)}
+  .lab-side{overflow:visible}
 }
 @media (max-width:560px){
   .stage{height:clamp(480px,80vh,640px);border-radius:18px}
@@ -270,6 +400,15 @@ dl.facts dd{margin:0}
   .mech{padding:12px}
   .mx-foot{grid-template-columns:1fr}
   .mx-ctl{justify-content:space-between}
+  .modes button{padding:7px 10px;font-size:13px}
+  .bench{height:auto;border-radius:18px}
+  .bench-head{padding:14px 14px 2px}
+  .bh-org select{max-width:200px}
+  .lb-stage{overflow-x:auto;padding:4px 8px;place-items:start}
+  .lb-svg{min-width:640px;height:auto}
+  .bench-bar{padding:10px 12px 14px}
+  .lb-prog{display:none}
+  .lab-side{padding:16px}
 }
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -283,6 +422,10 @@ dl.facts dd{margin:0}
       </svg>
       <div><small>Grupo GERMEN</small><b>Atlas de Microbiología</b></div>
     </div>
+    <nav class="modes" aria-label="Sección">
+      <button type="button" data-mode="atlas" aria-pressed="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></svg>Atlas</button>
+      <button type="button" data-mode="lab" aria-pressed="false"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6M10 3v6L4.5 19a1.5 1.5 0 0 0 1.3 2h12.4a1.5 1.5 0 0 0 1.3-2L14 9V3"/><path d="M7 15h10"/></svg>Laboratorio</button>
+    </nav>
     <label class="search" for="q">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <input id="q" type="search" placeholder="Busca un microorganismo o una enfermedad" autocomplete="off" aria-label="Buscar en el atlas">
@@ -326,6 +469,26 @@ dl.facts dd{margin:0}
   </main>
 
   <section class="panel" id="panel" aria-live="polite"></section>
+
+  <section class="lab" id="lab" hidden aria-label="Laboratorio virtual">
+    <nav class="lab-rail" id="labRail" aria-label="Técnicas de laboratorio"></nav>
+    <div class="bench" id="bench">
+      <div class="bench-head">
+        <div><p class="eyebrow" id="lbEyebrow"></p><h2 id="lbTitle"></h2></div>
+        <div class="bh-org"><label for="lbOrg">Aislamiento</label><select id="lbOrg"></select>
+          <button class="iconbtn" id="lbOrgLink" type="button" aria-label="Ver la ficha de este microorganismo en el atlas"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></svg></button></div>
+      </div>
+      <div class="lb-stage" id="lbStage"></div>
+      <div class="bench-bar"><div class="lb-prog" id="lbProg" aria-hidden="true"></div><div class="lb-acts" id="lbActs"></div></div>
+    </div>
+    <aside class="lab-side" aria-label="Protocolo e interpretación">
+      <div class="lb-say" id="lbSay" aria-live="polite"></div>
+      <div class="lb-res" id="lbRes" hidden></div>
+      <section><h3>Protocolo</h3><ol class="lb-steps" id="lbSteps"></ol></section>
+      <section class="lb-about" id="lbAbout"></section>
+      <p class="lb-refs">Simulación educativa del grupo GERMEN. Los resultados son ilustrativos y coherentes con cada ficha; no reemplazan los procedimientos ni los puntos de corte vigentes de su laboratorio.</p>
+    </aside>
+  </section>
 </div>
 
 <script type="importmap">
@@ -340,4 +503,9 @@ dl.facts dd{margin:0}
 <script src="js/builders-other.js"></script>
 <script src="js/walls.js"></script>
 <script src="js/viewer-core.js"></script>
+<script src="js/lab-data.js"></script>
+<script src="js/lab-core.js"></script>
+<script src="js/lab-id.js"></script>
+<script src="js/lab-ast.js"></script>
+<script src="js/lab-mol.js"></script>
 <script src="js/app.js"></script>

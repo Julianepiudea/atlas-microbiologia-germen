@@ -89,8 +89,8 @@
       body = `<div class="sec rise" style="--i:0"><h2>Huella de mecanismos · toca ▶ para ver cómo funcionan</h2><div class="fp">${cnt.map(([k,c]) => `<div class="fp-row ${c?'':'zero'}" style="--rc:var(${CATS[k][1]})"><span>${CATS[k][0]}</span><span class="bar"><i style="width:${Math.min(c,3)/3*100}%"></i></span><span class="n">${c}</span>${c && RANIM[k] ? `<button class="fpp" type="button" data-anim="${RANIM[k]}" aria-label="Animación: ${CATS[k][0]}">${playIcon}</button>` : '<span></span>'}</div>`).join('')}</div></div>
       <ul class="items">${o.res.map(([c,t,d,dr],k) => `<li class="it rise" style="--i:${k+1};--rc:var(${CATS[c][1]})"><span class="cat">${CATS[c][0]}</span><div class="it-h" style="margin-top:6px"><b>${t}</b></div><p>${d}</p><div class="drugs"><span>Afecta a:</span> ${dr}</div></li>`).join('')}</ul>`;
     } else {
-      body = `<div class="sec rise" style="--i:0"><h2>Claves de laboratorio</h2><ul class="dx">${o.dx.map(d => `<li>${d}</li>`).join('')}</ul></div>
-      <p class="foot rise" style="--i:1">Material educativo. Las decisiones clínicas deben seguir las guías locales y el antibiograma del aislamiento.</p>`;
+      body = `<div class="sec rise" style="--i:0"><h2>Claves de laboratorio</h2><ul class="dx">${o.dx.map(d => `<li>${d}</li>`).join('')}</ul></div>${A.labLinks ? A.labLinks(o) : ''}
+      <p class="foot rise" style="--i:3">Material educativo. Las decisiones clínicas deben seguir las guías locales y el antibiograma del aislamiento.</p>`;
     }
     $('#panel').innerHTML = `<p class="eyebrow">${GROUPS[o.grp]} · espécimen ${pad(state.idx+1)}</p>
       <h1 ${nameStyle(o)}>${esc(o.sp)}</h1><p class="com">${o.com}</p>
@@ -205,10 +205,13 @@
   $('#resetBtn').onclick = () => { viewer?.reset(); showCard(null); };
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape'){ if (mx) closeMech(); else showCard(null); return; }
-    if (e.target.matches('input,textarea,.tab') || mx) return;
+    if (e.target.matches('input,textarea,select,.tab') || mx || A.LAB?.state.mode === 'lab') return;
     if (e.key === 'ArrowRight'){ step(1); e.preventDefault(); } else if (e.key === 'ArrowLeft'){ step(-1); e.preventDefault(); }
   });
 
+  A.atlasIdx = () => state.idx;
+  A.selectOrg = i => { if (i >= 0) select(i); };
+  A.onAtlasShow = () => viewer?.reframe();
   const fromHash = ORGS.findIndex(o => '#'+o.id === location.hash);
   state.idx = fromHash >= 0 ? fromHash : 0;
   renderFilters(); renderList(); renderPanel(); renderStage();

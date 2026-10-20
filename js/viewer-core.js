@@ -188,13 +188,13 @@
       });
     }
 
-    function resize(){ W = stage.clientWidth; H = stage.clientHeight; renderer.setSize(W, H, false); camera.aspect = W/Math.max(1,H); reframe(); }
+    function resize(){ if (!stage.clientWidth || !stage.clientHeight) return; W = stage.clientWidth; H = stage.clientHeight; renderer.setSize(W, H, false); camera.aspect = W/Math.max(1,H); reframe(); }
     new ResizeObserver(resize).observe(stage); resize();
     controls.addEventListener('start', () => { camGoal = null; });
 
     const clock = new THREE.Clock(), camDir = new V();
     (function loop(){
-      requestAnimationFrame(loop);
+      requestAnimationFrame(loop); if (!stage.offsetParent) return;
       const dt = Math.min(clock.getDelta(), .05); frame++;
       if (!reduce && cur){ cur.ctx.spin.forEach(m => m.rotation.z += dt*m.userData.speed); dust.rotation.y += dt*.012; if (!cur.wallScene) cur.holder.position.y = Math.sin(clock.elapsedTime*.8)*.04; }
       if (camGoal){ camera.position.lerp(camGoal, 1-Math.pow(.02, dt)); if (camera.position.distanceTo(camGoal) < .01) camGoal = null; }
