@@ -160,7 +160,7 @@
       state.rotate = false; controls.autoRotate = false; ui.onRotate(false);
     }
 
-    function theme(){ const a = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#6ef0c6'; dust.material.color.set(a); rim.color.set(a); }
+    function theme(){ const a = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#7ccad0'; dust.material.color.set(a); rim.color.set(a); }
     theme();
 
     const NICE = [.001,.002,.005,.01,.02,.05,.1,.2,.5,1,2,5,10,20,50];
